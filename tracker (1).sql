@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 12, 2023 at 05:42 PM
+-- Generation Time: Dec 15, 2023 at 06:04 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.28
 
@@ -21,6 +21,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `tracker`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `senderId` int(11) NOT NULL,
+  `reciverId` int(11) NOT NULL,
+  `roomId` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `message`, `senderId`, `reciverId`, `roomId`, `createdAt`, `updatedAt`) VALUES
+(4, ' Show me the money!', 2, 3, 1, '2023-12-15 16:58:39', '2023-12-15 16:58:39'),
+(5, ' Show me the money!', 2, 3, 1, '2023-12-15 16:58:39', '2023-12-15 16:58:39');
 
 -- --------------------------------------------------------
 
@@ -46,6 +70,27 @@ INSERT INTO `Roles` (`id`, `title`, `createdAt`, `updatedAt`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Rooms`
+--
+
+CREATE TABLE `Rooms` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Rooms`
+--
+
+INSERT INTO `Rooms` (`id`, `title`, `createdAt`, `updatedAt`) VALUES
+(1, '  گروه 1', '2023-12-15 19:11:29', '2023-12-15 19:11:29'),
+(2, 'گروه 2', '2023-12-15 19:11:29', '2023-12-15 19:11:29');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `SequelizeMeta`
 --
 
@@ -60,7 +105,9 @@ CREATE TABLE `SequelizeMeta` (
 INSERT INTO `SequelizeMeta` (`name`) VALUES
 ('20210919092900-create-user.js'),
 ('20210919093130-create-role.js'),
-('20210919093157-create-user-role.js');
+('20210919093157-create-user-role.js'),
+('20231215151841-create-room.js'),
+('20231215152052-create-message.js');
 
 -- --------------------------------------------------------
 
@@ -75,13 +122,6 @@ CREATE TABLE `UserRoles` (
   `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `UserRoles`
---
-
-INSERT INTO `UserRoles` (`id`, `userId`, `roleId`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 1, '2023-12-06 20:30:21', '2023-12-06 20:30:21');
 
 -- --------------------------------------------------------
 
@@ -112,16 +152,32 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`id`, `username`, `email`, `password`, `phone`, `firstName`, `lastName`, `nationalCode`, `gender`, `verificationCode`, `verificationCodeExpireTime`, `isVerified`, `townshipId`, `createdAt`, `updatedAt`) VALUES
-(1, 'mayam@kordloo.com', 'mayam@kordloo.com', '$2b$10$hn/5xLEiXtE6rH098QgMx.xc9qhm8Qa3eBYtK8aOqJu74mJQk/4/C', '09199559728', 'mayayam', 'kordlo', NULL, NULL, NULL, NULL, NULL, NULL, '2023-12-06 16:57:28', '2023-12-06 16:57:28');
+(2, 'mayam@kordloo.com', 'mayam@kordloo.com', '$2b$10$4NU1ZdRMN57fT39CJe4hye3Qhxq77O10msCiH.8SOU7zFGsy87Edm', '09199559728', 'mayayam', 'kordlo', NULL, NULL, NULL, NULL, NULL, NULL, '2023-12-14 17:03:16', '2023-12-14 17:03:16'),
+(3, 'mayam@kordloo.com', 'mayam@kordloo.com', '$2b$10$rU.r86.Dsmi45cJuBIeHJ./OahHe3r/umCR2ILe2kZQ8WUkma8w1S', '09199559728', 'mayayam', 'kordlo', NULL, NULL, NULL, NULL, NULL, NULL, '2023-12-14 17:03:26', '2023-12-14 17:03:26');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `senderId` (`senderId`),
+  ADD KEY `reciverId` (`reciverId`),
+  ADD KEY `roomId` (`roomId`);
+
+--
 -- Indexes for table `Roles`
 --
 ALTER TABLE `Roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `Rooms`
+--
+ALTER TABLE `Rooms`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -150,9 +206,21 @@ ALTER TABLE `Users`
 --
 
 --
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `Roles`
 --
 ALTER TABLE `Roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `Rooms`
+--
+ALTER TABLE `Rooms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
@@ -165,11 +233,19 @@ ALTER TABLE `UserRoles`
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`senderId`) REFERENCES `Users` (`id`),
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`reciverId`) REFERENCES `Users` (`id`),
+  ADD CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`roomId`) REFERENCES `Rooms` (`id`);
 
 --
 -- Constraints for table `UserRoles`

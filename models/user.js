@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsToMany(models.Role , {through:'UserRole' , foreignKey:'userId'})
       this.hasMany(models.UserRole , {foreignKey:'userId'})
+      this.belongsTo(models.message  , {foreignKey:'senderId'})
+      this.belongsTo(models.message  , {foreignKey:'reciverId'})
     }
   };
   User.init({
