@@ -8,7 +8,7 @@ const bodyParser = require("body-parser")
 const polygon = require("./method/map")
 const cors = require('cors')
 const {setHeaders} =require("./middleware/auth")
-const {insertNewMessage} = require("./controller/soket")
+
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
@@ -21,12 +21,18 @@ app.use(setHeaders)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(router)
-
-io.on('connection',socket=>{
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+console.log(45465,polygon.polygon.coordinates.length)
+io.on('connection',async socket=>{
     console.log("connect")
-    socket.emit('sendPolygon', { data:polygon.polygon});
-    socket.on("newMessage",(data)=>{insertNewMessage(data)})
-    socket.on('disconnect', () => {console.log("user Disconnected") });
+    for(let i =0 ; i<polygon.polygon.coordinates.length ; i++){
+        socket.emit('sendPolygon', { data:polygon.polygon});
+        await sleep(2000)
+    }
 })
 
 server.listen(port,()=>{
