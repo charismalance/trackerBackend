@@ -30,7 +30,7 @@ console.log(45465,polygon.polygon.coordinates.length)
 io.on('connection',async socket=>{
     console.log("connect")
     for(let i =0 ; i<polygon.polygon.coordinates.length ; i++){
-        socket.emit('sendPolygon', { data:polygon.polygon});
+        socket.emit('sendPolygon', { data:polygon.polygon.coordinates[i]});
         await sleep(2000)
     }
 })
